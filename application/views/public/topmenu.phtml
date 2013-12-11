@@ -1,0 +1,53 @@
+  <body>
+<div id="wrap">
+  <div id="loadingbar"></div>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="/" class="navbar-brand">HM</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li id="indexpage"><a href="/">首页</a></li>
+              <?php
+              if (isset($_SESSION['is_login'])) {
+              ?>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">项目管理 <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="/project/template">模板浏览</a></li>
+                <li><a href="/project/lists">项目列表</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">项目处理</li>
+                <li><a href="/project/create">1.创建项目</a></li>
+                <li><a href="/project/uploadconf">2.上传项目配置包</a></li>
+                <li><a href="/project/parseconf">3.开始生成自定义内容</a></li>
+                <li><a href="#">4.待续</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">其它</li>
+                <li><a href="https://github.com/yinzhiping/HyperMobile-ios" target="_blank">Github</a></li>
+              </ul>
+            </li>
+<?php
+              }
+          ?>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        <?php 
+                  if ($_SESSION['is_login']==1) {
+                    echo '<li><a href="/project/index">欢迎:'.$_SESSION['username'].'</a></li><li class="divider-vertical"></li><li><a href="/user/logout">退出</a></li>';
+                  } else {
+                    echo '<li><a href="/user/login">登录</a></li>';
+                  }              
+         ?>
+
+        </ul>
+      </div>
+      
+    </div>
+  </div>

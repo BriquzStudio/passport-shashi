@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+  <head>
+    <meta charset="utf-8">
+    <title>hm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="hm" />
+    <meta name="description" content="hm" />
+
+
+    <!-- Le styles -->
+    <link href="/bs3/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+      html {height:100%;}
+      body {
+        height: 100%;
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+      #wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -60px;
+      }
+      #footer {
+        height: 60px;
+      }
+      #footer {
+        background-color: #f5f5f5;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+      @media (max-width: 767px) {
+        #footer {
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+      .container .credit {
+        margin: 20px 0;
+      }
+      #loadingbar {width: 100%;height: 100%;background: #FFFFFF;position: absolute;top: 0;left:0;z-index: 9999;filter:alpha(opacity=70); /* IE */ -moz-opacity:0.7; /* Moz + FF */opacity: 0.7;display: none;}
+    </style>
+    <script src="/assets/js/jquery.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="/assets/js/html5shiv.js"></script>
+    <![endif]-->
+    <?php
+      if (!isset($_SESSION['is_login'])&&isset($_COOKIE['hmcmcc_auth'])) {
+        echo '<script type="text/javascript">';
+        echo "window.location.href='http://hm.cmcc.in/user/checklogin';";
+        echo "</script>";
+      }
+    ?>
+  </head>
