@@ -199,10 +199,10 @@ $(document).ready ->
   #   Navbar scroll animation
   # =============================================================================
   ###
-  $(".navbar.scroll-hide").mouseover ->
-    $(".navbar.scroll-hide").removeClass "closed"
+  $(".page-header-fixed .navbar.scroll-hide").mouseover ->
+    $(".page-header-fixed .navbar.scroll-hide").removeClass "closed"
     setTimeout (->
-      $(".navbar.scroll-hide").css overflow: "visible"
+      $(".page-header-fixed .navbar.scroll-hide").css overflow: "visible"
     ), 150
 
   $ ->
@@ -213,10 +213,10 @@ $(document).ready ->
       return  if Math.abs(lastScrollTop - st) <= delta
       if st > lastScrollTop
         # downscroll code
-        $('.navbar.scroll-hide').addClass "closed"
+        $('.page-header-fixed .navbar.scroll-hide').addClass "closed"
       else
         # upscroll code
-        $('.navbar.scroll-hide').removeClass "closed"
+        $('.page-header-fixed .navbar.scroll-hide').removeClass "closed"
       lastScrollTop = st
 
 
@@ -227,6 +227,52 @@ $(document).ready ->
   ###
   $('.navbar-toggle').click ->
     $('body, html').toggleClass "nav-open"
+
+
+  ###
+  # =============================================================================
+  #   Style Selector
+  # =============================================================================
+  ###
+  $(".style-selector select").each ->
+    $(this).find("option:first").attr "selected", "selected"
+
+  $(".style-toggle").bind "click", ->
+    if $(this).hasClass("open")
+      $(this).removeClass("open").addClass "closed"
+      $(".style-selector").animate({"right": "-240px"}, 250)
+    else
+      $(this).removeClass("closed").addClass "open"
+      $(".style-selector").show().animate({"right": 0}, 250)
+
+  $(".style-selector select[name='layout']").change ->
+    if $(".style-selector select[name='layout'] option:selected").val() is "boxed"
+      $("body").addClass "layout-boxed"
+      $(window).resize()
+    else
+      $("body").removeClass "layout-boxed"
+      $(window).resize()
+
+  $(".style-selector select[name='nav']").change ->
+    if $(".style-selector select[name='nav'] option:selected").val() is "top"
+      $("body").removeClass "sidebar-nav"
+      $(window).resize()
+    else
+      $("body").addClass "sidebar-nav"
+      $(window).resize()
+
+  $(".color-options a").bind "click", ->
+    $(".color-options a").removeClass "active"
+    $(this).addClass "active"
+
+  $(".pattern-options a").bind "click", ->
+    classes = $("body").attr("class").split(" ").filter((item) ->
+      (if item.indexOf("bg-") is -1 then item else "")
+    )
+    $("body").attr "class", classes.join(" ")
+    $(".pattern-options a").removeClass "active"
+    $(this).addClass "active"
+    $("body").addClass $(this).attr("id")
 
 
   ###
@@ -272,9 +318,6 @@ $(document).ready ->
       $current = index + 1
       $percent = ($current / $total) * 100
       $("#wizard").find(".progress-bar").css "width", $percent + "%"
-
-      # $("#rootwizard").bootstrapWizard
-      #   onNext: (tab, navigation, index) ->
 
 
   ###
@@ -341,15 +384,7 @@ $(document).ready ->
   #   Bootstrap Popover
   # =============================================================================
   ###
-  $("#popover").popover()
-  $("#popover-left").popover
-    placement: "left"
-  $("#popover-top").popover
-    placement: "top"
-  $("#popover-right").popover
-    placement: "right"
-  $("#popover-bottom").popover
-    placement: "bottom"
+  $(".popover-trigger").popover()
 
 
   ###
@@ -357,15 +392,7 @@ $(document).ready ->
   #   Bootstrap Tooltip
   # =============================================================================
   ###
-  $("#tooltip").tooltip()
-  $("#tooltip-left").tooltip
-    placement: "left"
-  $("#tooltip-top").tooltip
-    placement: "top"
-  $("#tooltip-right").tooltip
-    placement: "right"
-  $("#tooltip-bottom").tooltip
-    placement: "bottom"
+  $(".tooltip-trigger").tooltip()
 
 
   ###
@@ -916,14 +943,6 @@ $(document).ready ->
 
   ###
   # =============================================================================
-  #   File upload buttons
-  # =============================================================================
-  ###
-  $('.fileupload').fileupload()
-
-
-  ###
-  # =============================================================================
   #   Datepicker
   # =============================================================================
   ###
@@ -1062,3 +1081,37 @@ $(document).ready ->
       $(this).find("[placeholder]").each ->
         input = $(this)
         input.val ""  if input.val() is input.attr("placeholder")
+
+
+  ###
+  # =============================================================================
+  #   Ladda loading buttons
+  # =============================================================================
+  ###
+  # Bind normal buttons
+  Ladda.bind ".ladda-button:not(.progress-demo)",
+    timeout: 2000
+
+
+  # Bind progress buttons and simulate loading progress
+  Ladda.bind ".ladda-button.progress-demo",
+    callback: (instance) ->
+      progress = 0
+      interval = setInterval(->
+        progress = Math.min(progress + Math.random() * 0.1, 1)
+        instance.setProgress progress
+        if progress is 1
+          instance.stop()
+          clearInterval interval
+      , 200)
+
+  ###
+  # =============================================================================
+  #   Dropzone File Upload
+  # =============================================================================
+  ###
+
+  # Set param name for server support
+  Dropzone.options.dropzoneDemo =
+    paramName: "upload[file]"
+    addRemoveLinks: true

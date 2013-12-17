@@ -33,7 +33,7 @@
   margin-bottom: 0;
 }
 
-.note-editor .note-toolbar .btn [class^="icon-"] {
+.note-editor .note-toolbar .btn [class^="fa"] {
   margin: 0;
 }
 
@@ -119,7 +119,7 @@
   border-top: 1px solid #a9a9a9;
 }
 
-.note-editor .note-statusbar .note-resizebar .note-icon-bar {
+.note-editor .note-statusbar .note-resizebar .note-fa.fa-bar {
   width: 20px;
   margin: 1px auto;
   border-top: 1px solid #a9a9a9;

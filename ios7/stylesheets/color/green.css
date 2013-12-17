@@ -49,7 +49,7 @@ a {
 .select2-drop-active {
   border-color: #60c560; }
 
-.dataTable th {
+.dataTable th.sorting {
   color: #60c560; }
   .dataTable th.sorting:after {
     border-top: 5px solid #60c560; }
