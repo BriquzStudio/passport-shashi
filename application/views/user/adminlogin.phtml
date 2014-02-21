@@ -17,13 +17,30 @@
     <![endif]--> 
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
   </head>
+  <script type="text/javascript">
+    function checkislogin(){
+                    $.get("http://passport.shashi-inc.com/user/islogin",function(d){
+                            if (d.status==1) {
+                                    window.location.href="http://passport.shashi-inc.com/user/adminjump";
+                                    // alert("你已经登陆了");
+                            }else{
+                                    setTimeout(checkislogin,2500);
+                            }
+                    },"json");
+          
+    }
+    $(document).ready(function(){
+          $(".login-container").addClass("active");//显示主题窗口
+          checkislogin();
+    });
+
+  </script>
   <script>
   
   $(window).load(function() {
       
     });
   $(document).ready(function(){
-    $(".login-container").addClass("active");//显示主题窗口
   });
 
   </script>
@@ -31,25 +48,10 @@
     <!-- Login Screen -->
     <div class="login-wrapper">
       <div class="login-container">
-        <h1 style="font-size:60px;margin-top:18px;">登陆</h1>
-        <form action="index.html">
-          <div class="form-group">
-            <input class="form-control" placeholder="用户名/手机号/邮箱" type="text">
-          </div>
-          <div class="form-group">
-            <input class="form-control" placeholder="密码" type="text"><input type="submit" value="&#xf054;">
-          </div>
-          <div class="form-options clearfix">
-            <a class="pull-right" href="#">忘记密码?</a>
-            <div class="text-left">
-              <label class="checkbox"><input type="checkbox" disabled="disabled"><span>记住登陆状态</span></label>
-            </div>
-          </div>
-        </form>
+        <h1 style="font-size:20px;margin-top:18px;">扫描二维码以登陆</h1>
+        <img src="<?php echo $url; ?>">
 
-        <p class="signup">
-          还没帐号? <a href="/user/register">马上注册</a>
-        </p>
+        
       </div>
     </div>
     <!-- End Login Screen -->

@@ -20,7 +20,7 @@ html {
   height: 100%; }
 
 body {
-  font-family: "Lato", sans-serif !important;
+  font-family: "Helvetica Neue", "STHeiti Light",sans-serif !important;
   color: #666666;
   min-height: 100%; }
   body.page-header-fixed {
@@ -43,7 +43,7 @@ body {
   padding-bottom: 20px; }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family:  "Helvetica Neue", SimHei, Helvetica, Arial, sans-serif;
   margin: 0 0 15px;
   font-weight: 300; }
 
@@ -2846,7 +2846,7 @@ button.close {
   background: white;
   padding: 10px 12px;
   border: 1px solid #cccccc;
-  font-family: "Lato", sans-serif;
+  font-family: "SimHei", sans-serif;
   font-weight: 300;
   border-radius: 5px;
   -webkit-transition: border 0.3s;
