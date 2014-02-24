@@ -67,8 +67,8 @@ class UserController extends Base_Controller {
       if(!empty($_SESSION['url'])) {
         $url=urldecode($_SESSION['url']);
         $time=time();
-        $sign=md5($url.$time.$_SESSION['username']."gwibig8");
-        $jumpurl=$url."?sign=".$sign."&username=".urlencode($_SESSION['username'])."&time=".$time;
+        $sign=md5($url.$time.$_SESSION['username']."administrator"."gwibig8");
+        $jumpurl=$url."?sign=".$sign."&username=".urlencode($_SESSION['username'])."&time=".$time."&scope=administrator";
         session_destroy();
         header('Location:'.$jumpurl);
       }else{
@@ -142,9 +142,11 @@ class UserController extends Base_Controller {
   }
 
 
-  public function trustlogintokengenerate(){
+  public function trustlogintokengenerate($usersalt){
 
-      $secret= "FYK8Gh3gF6dY";//12位定常密钥
+      // $secret= "FYK8Gh3gF6dY";//12位定常密钥
+      $secret = $usersalt;
+
       $current= date("YmdHi");//年月日时分e.g 201311231929
       $second=date("s");
       if (intval($second)>=30) {
@@ -190,12 +192,22 @@ class UserController extends Base_Controller {
   public function trustloginAction(){
     Yaf_Dispatcher::getInstance()->disableView();
     header("Content-type: application/json");
-    //需要的参数：username,token
-    $tokens=$this->trustlogintokengenerate();
-    // var_dump($tokens);
     if (!isset($_GET['username'])||!isset($_GET['token'])||!isset($_GET['ssid'])) {
       $this->ajax(0,"没有传入必要参数","lack of necessary parameter");
     }
+    //需要的参数：username,token
+    //获取salt值    
+    $uid=UserModel::getInstance()->getuid($_GET['username']);
+    $admin_info=UserModel::getInstance()->is_admin($uid);
+    if(!$admin_info) {
+      $this->ajax(0,"授权凭证无效","invalid auth");
+    }else{
+      $salt=$admin_info['salt'];
+    }
+    // $salt='FYK8Gh3gF6dY';
+    $tokens=$this->trustlogintokengenerate($salt);
+    // var_dump($tokens);
+    
     if (in_array($_GET['token'], $tokens)) {
       //尚未设置验证用户
       session_id($_GET['ssid']);
@@ -226,7 +238,11 @@ class UserController extends Base_Controller {
 
    public function testAction(){
     // session_destroy();
-    var_dump($_SESSION);
+    // var_dump($_SESSION);
+    // echo "fuck";
+    // $a=UserModel::getInstance()->getuid("yinzhiping");
+    // var_dump($a);
+    // var_dump(UserModel::getInstance());
     // $a=UserModel::getInstance()->getInfo();
     // var_dump($a);
     // echo typeOfUsername("344511@qq");

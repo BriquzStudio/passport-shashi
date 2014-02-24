@@ -6,6 +6,8 @@ class UserModel {
 	
 	private $db_link;
 
+	private $db;
+
 	public $err_msg;
 
 	private $_fields=array(
@@ -35,6 +37,33 @@ class UserModel {
     	}
     	return true;
     }
+
+    /**
+     * 获取用户uid
+     * @param  string $username 
+     * @param  string $type     
+     * @return int           
+     */
+    public function getuid($username){
+    	$_username=$this->db->escapeString($username);
+    	$_type=typeOfUsername($username);
+    	$sql="select `uid` from `user` where `$_type`=$_username";
+    	$result= $this->db->fetchRow($sql);
+    	return $result['uid'];
+    }
+
+    /**
+     * 判断用户是否为管理员
+     * @param  int  $uid 
+     * @return array
+     */
+    public function is_admin($uid){
+		$_uid=intval($uid);
+		$sql="select * from admin_list where uid=$_uid";
+		return $this->db->fetchRow($sql);   
+    }
+
+
 
     /**
      * 注册用户
@@ -71,7 +100,15 @@ class UserModel {
 
         $this->db_link= $this->linkDb();
 
-        return true;
+        $param = Yaf_Application::app()->getConfig()->application->db->toArray();
+
+		$base= Base_Db::getInstance($param);
+
+		$this->db=$base;
+
+		return true;
+
+
     }
 
 	/**
@@ -85,7 +122,7 @@ class UserModel {
 		$params = Yaf_Application::app()->getConfig()->application->medoo->toArray();
 		$db = new medoo($params);
 		return $db;
-		// return Base_Db::getInstance($params);
+
 	}
 	
 	/**
